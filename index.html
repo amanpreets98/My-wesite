@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phishing Detection</title>
+    <script>
+    async function predict() {
+        let features = {};
+        document.querySelectorAll('input.feature').forEach(input => {
+            features[input.name] = parseFloat(input.value) || 0;
+        });
+        const response = await fetch('/predict', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(features)
+        });
+        const result = await response.json();
+        alert('Prediction: ' + (result.prediction === 1 ? 'Phishing' : 'Legitimate'));
+    }
+    </script>
+</head>
+<body>
+    <h1>Phishing Detection</h1>
+    <div>
+        <label>Feature 1: <input type="number" class="feature" name="feature1"></label><br>
+        <label>Feature 2: <input type="number" class="feature" name="feature2"></label><br>
+        <label>Feature 3: <input type="number" class="feature" name="feature3"></label><br>
+        <!-- Add more features as required -->
+        <button onclick="predict()">Predict</button>
+    </div>
+</body>
+</html>
